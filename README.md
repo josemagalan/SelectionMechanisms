@@ -10,17 +10,17 @@ https://josemagalan.shinyapps.io/SelectionMechanisms/
 
 ## Authors
 
--   José Manuel Galán\
--   Silvia Díaz-de La Fuente\
--   Virginia Ahedo\
--   María Pereda\
+-   José Manuel Galán
+-   Silvia Díaz-de La Fuente
+-   Virginia Ahedo
+-   María Pereda
 -   José Ignacio Santos
 
 
 ## Overview
 
 Selection pressure is one of the key drivers of evolutionary dynamics in
-Genetic Algorithms.\
+Genetic Algorithms.
 Different selection operators induce different convergence speeds and
 diversity loss patterns.
 
@@ -119,3 +119,4 @@ https://josemagalan.shinyapps.io/SelectionMechanisms/
 ## License
 
 This project is released under the MIT License.
+
