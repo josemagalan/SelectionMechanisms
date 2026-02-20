@@ -1,3 +1,5 @@
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 # SelectionMechanisms
 
 Interactive Shiny application to explore classical selection mechanisms
@@ -119,4 +121,5 @@ https://josemagalan.shinyapps.io/SelectionMechanisms/
 ## License
 
 This project is released under the MIT License.
+
 
