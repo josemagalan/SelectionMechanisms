@@ -1,4 +1,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![Shiny App](https://img.shields.io/badge/Shiny-Live_App-brightgreen)](https://josemagalan.shinyapps.io/SelectionMechanisms/)
+![R](https://img.shields.io/badge/R-4.0%2B-blue)
+![Purpose](https://img.shields.io/badge/Purpose-Teaching_Tool-informational)
 
 # SelectionMechanisms
 
@@ -121,5 +124,6 @@ https://josemagalan.shinyapps.io/SelectionMechanisms/
 ## License
 
 This project is released under the MIT License.
+
 
 
