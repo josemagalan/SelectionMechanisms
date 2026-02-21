@@ -277,6 +277,12 @@ ui <- fluidPage(
                  tableOutput("final_table")),
         tabPanel("Comparison",
                  helpText("Overlays saved experiments (Add to comparison)."),
+                 fluidRow(
+                   column(4, downloadButton("dl_comp_csv", "Download comparison CSV")),
+                   column(4, downloadButton("dl_comp_pdf", "Export plots (PDF)")),
+                   column(4, downloadButton("dl_comp_png", "Export plots (PNG zip)"))
+                 ),
+                 hr(),
                  plotOutput("plot_comp_unique", height = 320),
                  plotOutput("plot_comp_shannon", height = 320),
                  plotOutput("plot_comp_fit", height = 320),
@@ -518,7 +524,6 @@ server <- function(input, output, session) {
     req(results())
     
     mp <- get_engine_method_and_params()
-    method <- mp$method
     params <- mp$params
     
     method_name <- switch(
@@ -585,7 +590,8 @@ server <- function(input, output, session) {
     bind_rows(rv$comps)
   })
   
-  output$plot_comp_unique <- renderPlot({
+  # ---- Create ggplot objects as reactives (for UI + export)
+  comp_plot_unique <- reactive({
     df <- comp_all(); req(df)
     ggplot(df, aes(gen, unique_mean, color = model, group = model)) +
       geom_line_compat(1.1) +
@@ -593,7 +599,7 @@ server <- function(input, output, session) {
       theme_minimal()
   })
   
-  output$plot_comp_shannon <- renderPlot({
+  comp_plot_shannon <- reactive({
     df <- comp_all(); req(df)
     ggplot(df, aes(gen, shannon_mean, color = model, group = model)) +
       geom_line_compat(1.1) +
@@ -601,7 +607,7 @@ server <- function(input, output, session) {
       theme_minimal()
   })
   
-  output$plot_comp_fit <- renderPlot({
+  comp_plot_fit <- reactive({
     df <- comp_all(); req(df)
     ggplot(df, aes(gen, fit_mean, color = model, group = model)) +
       geom_line_compat(1.1) +
@@ -609,10 +615,67 @@ server <- function(input, output, session) {
       theme_minimal()
   })
   
+  output$plot_comp_unique <- renderPlot({ comp_plot_unique() })
+  output$plot_comp_shannon <- renderPlot({ comp_plot_shannon() })
+  output$plot_comp_fit <- renderPlot({ comp_plot_fit() })
+  
   output$comp_table <- renderTable({
     req(rv$meta)
     rv$meta
   }, digits = 0)
+  
+  # ============================
+  # Downloads (Comparison)
+  # ============================
+  
+  output$dl_comp_csv <- downloadHandler(
+    filename = function() {
+      paste0("comparison_data_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".csv")
+    },
+    content = function(file) {
+      df <- comp_all()
+      req(df)
+      write.csv(df, file, row.names = FALSE)
+    }
+  )
+  
+  output$dl_comp_pdf <- downloadHandler(
+    filename = function() {
+      paste0("comparison_plots_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+    },
+    content = function(file) {
+      req(comp_all())
+      grDevices::pdf(file, width = 8, height = 5)
+      print(comp_plot_unique())
+      print(comp_plot_shannon())
+      print(comp_plot_fit())
+      grDevices::dev.off()
+    }
+  )
+  
+  output$dl_comp_png <- downloadHandler(
+    filename = function() {
+      paste0("comparison_plots_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".zip")
+    },
+    content = function(file) {
+      req(comp_all())
+      
+      tmpdir <- tempdir()
+      f1 <- file.path(tmpdir, "comparison_unique.png")
+      f2 <- file.path(tmpdir, "comparison_shannon.png")
+      f3 <- file.path(tmpdir, "comparison_mean_fitness.png")
+      
+      ggplot2::ggsave(f1, plot = comp_plot_unique(),  width = 8, height = 5, dpi = 300)
+      ggplot2::ggsave(f2, plot = comp_plot_shannon(), width = 8, height = 5, dpi = 300)
+      ggplot2::ggsave(f3, plot = comp_plot_fit(),     width = 8, height = 5, dpi = 300)
+      
+      old <- getwd()
+      on.exit(setwd(old), add = TRUE)
+      setwd(tmpdir)
+      
+      utils::zip(zipfile = file, files = c(basename(f1), basename(f2), basename(f3)))
+    }
+  )
 }
 
 shinyApp(ui, server)
