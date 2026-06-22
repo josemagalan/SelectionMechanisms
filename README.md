@@ -93,6 +93,7 @@ It is suitable for undergraduate and graduate courses in:
 -   Artificial Intelligence
 -   Operations Research
 -   Industrial Engineering
+-   Stochastic Optimization
 
 
 ## Running Locally
