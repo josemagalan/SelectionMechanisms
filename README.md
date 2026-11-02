@@ -139,7 +139,7 @@ https://josemagalan.shinyapps.io/SelectionMechanisms/
 | SelectionMechanisms | [Open / Abrir](https://josemagalan.shinyapps.io/SelectionMechanisms/) | [GitHub](https://github.com/josemagalan/SelectionMechanisms) |
 | Book / Libro: *Evolución a la vista* | [Read / Leer](https://josemagalan.github.io/genetic-algorithms-lab-book/) | [GitHub](https://github.com/josemagalan/genetic-algorithms-lab-book) |
 
-El libro está en español. / The book is in Spanish.
+[Español · original](https://josemagalan.github.io/genetic-algorithms-lab-book/) · [English · AI translation](https://josemagalan.github.io/genetic-algorithms-lab-book/en/).
 <!-- ga-series-links:end -->
 
 ## License
